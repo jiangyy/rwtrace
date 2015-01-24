@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This script can be used to reproduce experimental results
+# from the paper (we included the benchmark program ocean and water,
+# while the others can be tested in the similar way.
+
+# Then original study is conducted on a server of four Xeon X7460 processors
+# and 64GB of RAM which has a NUMA architecture.
+
+export MODE=RWTRACE
+export BENCH=$1
+make -s && \
+ln -f -s example/$BENCH/infile ./infile && \
+bash -c "cd example/$BENCH && make -s" && \
+opt -basicaa -load ./bin/instr.so -instrument  < example/$BENCH/opt.bc > ins.bc && \
+llvm-link ins.bc bin/runtime.bc -o full.bc && \
+opt -O1 < full.bc > full_opt.bc && \
+clang++ -O2 runtime/padding.cpp full_opt.bc -o a.out -lm -lpthread && \
+rm -f *.bc && \
+./a.out $(cat example/$BENCH/args)
