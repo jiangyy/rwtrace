@@ -38,6 +38,10 @@
 #ifndef __HASH_H__
 #define __HASH_H__
 
+#ifdef __APPLE__
+typedef int pid_t;
+#endif
+
 #include <unordered_map>
 
 const int HASH_SIZE = 16;

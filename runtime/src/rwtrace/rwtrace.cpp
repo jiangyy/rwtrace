@@ -119,9 +119,11 @@ _RWTRACE_after_read(void *ptr) {
     LOG_RAW(clk_tid, clk_ver, evt_id);
     // There may be a over-written WAR dependence
     //   and [last_reader is the correct reader]
+#ifdef TRACE_WAR
     if (last_reader != -1) {
       LOG_WAR(-1, evt_id, last_reader);
     }
+#endif
   }
 }
 

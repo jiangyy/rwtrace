@@ -22,6 +22,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <cstdio>
+#include <cstdlib>
 #include <signal.h>
 
 __thread int __tid = -1;
